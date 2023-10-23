@@ -1,0 +1,23 @@
+services:
+  ecc:
+    build: .
+    container_name: ecc
+    depends_on: 
+      - ecc-postgres
+    ports:
+      - 8080:8080
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ecc-postgres:5432/ecc
+      - SPRING_DATASOURCE_USERNAME=ecc
+      - SPRING_DATASOURCE_PASSWORD=ecc
+    restart: unless-stopped
+  ecc-postgres:
+    image: postgres:15-alpine
+    container_name: ecc-postgres
+    environment:
+      - POSTGRES_PASSWORD=ecc
+      - POSTGRES_USER=ecc
+      - POSTGRES_DB=ecc
+    ports:
+      - 5432:5432
+    restart: unless-stopped

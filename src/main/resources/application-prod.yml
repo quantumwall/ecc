@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://ecc-postgres:5432/ecc
+    password: ecc
+    username: ecc
