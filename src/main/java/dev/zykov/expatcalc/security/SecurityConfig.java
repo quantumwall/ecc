@@ -16,7 +16,11 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain filter(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(auth -> auth.anyRequest().authenticated());
+        http.csrf(csrf -> csrf.disable());
+        http.authorizeHttpRequests(auth -> {
+            auth.requestMatchers("/authorize").permitAll();
+            auth.anyRequest().authenticated();
+        });
         http.oauth2Login(login -> {
             login.defaultSuccessUrl("/authorize", true);
             login.userInfoEndpoint(ui -> ui.oidcUserService(customOidcUserService));
