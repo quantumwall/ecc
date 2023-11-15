@@ -18,8 +18,7 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public void processPostLogin(String email) {
-        System.out.println(email);
+    public User create(User user) {
+        return userRepository.save(user);
     }
-
 }

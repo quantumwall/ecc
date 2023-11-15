@@ -11,6 +11,6 @@ spring:
             clientId: ${GOOGLE_CLIENT_ID}
             clientSecret: ${GOOGLE_CLIENT_SECRET}
             redirect-uri: http://localhost:8080/login/oauth2/code/google
-logging:
-  level:
-    org.springframework.security: TRACE
+jwt:
+  secret: fBvgt1jt+NIK5xPADxAbMp7C4k5fkSXZMg0lZX8yV4KcSRxqWDS1gglJW575pzcc
+  lifetime: 30m
