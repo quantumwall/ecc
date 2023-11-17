@@ -3,6 +3,7 @@ package dev.zykov.expatcalc.util;
 import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -10,9 +11,12 @@ import org.springframework.context.annotation.Configuration;
 
 import dev.zykov.expatcalc.entity.Role;
 import dev.zykov.expatcalc.entity.User;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.Setter;
 
+@Setter
 @Configuration
 @ConfigurationProperties(prefix = "jwt")
 public class JwtUtil {
@@ -29,5 +33,19 @@ public class JwtUtil {
         claims.put("email", user.getEmail());
         claims.put("roles", roles);
         return Jwts.builder().claims(claims).issuedAt(issuedAt).expiration(expiration).signWith(key).compact();
+    }
+
+    public String geEmail(String token) {
+        return getClaims(token).get("email", String.class);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<String> getRoles(String token) {
+        return getClaims(token).get("roles", List.class);
+    }
+
+    public Claims getClaims(String token) {
+        var key = Keys.hmacShaKeyFor(secret.getBytes());
+        return Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload();
     }
 }

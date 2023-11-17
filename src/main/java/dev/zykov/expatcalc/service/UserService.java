@@ -2,6 +2,10 @@ package dev.zykov.expatcalc.service;
 
 import java.util.Optional;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import dev.zykov.expatcalc.entity.User;
@@ -10,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -21,4 +25,13 @@ public class UserService {
     public User create(User user) {
         return userRepository.save(user);
     }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        var user = findByEmail(email)
+            .orElseThrow(() -> new UsernameNotFoundException("User %s not found".formatted(email)));
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), null,
+                user.getRoles().stream().map(r -> new SimpleGrantedAuthority(r.getName())).toList());
+    }
+
 }

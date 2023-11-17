@@ -1,4 +1,4 @@
-package dev.zykov.expatcalc.security.oidc;
+package dev.zykov.expatcalc.service;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import dev.zykov.expatcalc.entity.User;
 import dev.zykov.expatcalc.repository.RoleRepository;
-import dev.zykov.expatcalc.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
